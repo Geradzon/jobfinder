@@ -1,0 +1,28 @@
+name: JobFinder Mailer
+
+on:
+  schedule:
+    - cron: '0 8 * * *'  # täglich um 8 Uhr morgens
+  workflow_dispatch:
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code holen
+        uses: actions/checkout@v3
+
+      - name: Python installieren
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Abhängigkeiten installieren
+        run: pip install requests beautifulsoup4
+
+      - name: Skript ausführen
+        run: python main.py
+        env:
+          EMAIL_ABSENDER: ${{ secrets.EMAIL_ABSENDER }}
+          EMAIL_PASSWORT: ${{ secrets.EMAIL_PASSWORT }}
+          EMAIL_ZIEL: ${{ secrets.EMAIL_ZIEL }}
