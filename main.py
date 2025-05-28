@@ -10,7 +10,7 @@ UMKREIS_KM = 40
 
 EMAIL_ABSENDER = os.environ['EMAIL_ABSENDER']
 EMAIL_PASSWORT = os.environ['EMAIL_PASSWORT']
-EMAIL_EMPFÄNGER = os.environ['EMAIL_EMPFÄNGER']
+EMAIL_ZIEL = os.environ['EMAIL_ZIEL']  # Angepasst
 
 def finde_jobs():
     url = f'https://jobboerse.arbeitsagentur.de/jobsuche/suche?was={SUCHFELD}&wo={STANDORT}&umkreis={UMKREIS_KM}'
@@ -31,7 +31,7 @@ def sende_email(inhalt):
     msg = MIMEText('\n\n'.join(inhalt))
     msg['Subject'] = '🔍 Neue Jobangebote für dich'
     msg['From'] = EMAIL_ABSENDER
-    msg['To'] = EMAIL_EMPFÄNGER
+    msg['To'] = EMAIL_ZIEL
 
     with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
         server.login(EMAIL_ABSENDER, EMAIL_PASSWORT)
