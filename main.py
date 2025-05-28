@@ -10,7 +10,7 @@ UMKREIS_KM = 40
 
 EMAIL_ABSENDER = os.environ['EMAIL_ABSENDER']
 EMAIL_PASSWORT = os.environ['EMAIL_PASSWORT']
-EMAIL_ZIEL = os.environ['EMAIL_ZIEL']  # Angepasst
+EMAIL_ZIEL = os.environ['EMAIL_ZIEL']
 
 def finde_jobs():
     url = f'https://jobboerse.arbeitsagentur.de/jobsuche/suche?was={SUCHFELD}&wo={STANDORT}&umkreis={UMKREIS_KM}'
@@ -29,7 +29,7 @@ def finde_jobs():
 
 def sende_email(inhalt):
     msg = MIMEText('\n\n'.join(inhalt))
-    msg['Subject'] = '🔍 Neue Jobangebote für dich'
+    msg['Subject'] = '🔍 Neue Jobangebote für dich (Testlauf)'
     msg['From'] = EMAIL_ABSENDER
     msg['To'] = EMAIL_ZIEL
 
@@ -38,9 +38,13 @@ def sende_email(inhalt):
         server.send_message(msg)
 
 if __name__ == '__main__':
+    # Test-Inhalt immer senden – egal ob echte Jobs gefunden werden oder nicht
     jobs = finde_jobs()
-    if jobs:
-        sende_email(jobs)
-        print('✅ E-Mail gesendet.')
-    else:
-        print('ℹ️ Keine neuen Jobs gefunden.')
+    if not jobs:
+        jobs = [
+            '📄 Testangebot: Ausbildung bei IT Beispielfirma',
+            '📄 Testangebot: EQ in Düsseldorf – Bewerben bis 31. Juni!',
+            '📄 Beispielstelle: Fachinformatiker bei DigitalStarter GmbH'
+        ]
+    sende_email(jobs)
+    print('✅ Test-E-Mail gesendet.')
